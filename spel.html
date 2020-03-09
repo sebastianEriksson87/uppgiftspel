@@ -32,7 +32,23 @@
 
     <script>
         /* variabler
-                _______________________________________*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        _______________________________________*/
+
+
+        // godkända tecken
+        let chars = "abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ";
+        //vektorer
+        // ord i spelet
+        let words = ["grön", "glad", "vår", "sol", "snö", "sommar", "häst", "surfing", "ballong", "blå", "hav", "hund", "katt", "tiger", "säl", "ametist", "cyniker", "implicit", "vågor", "vind"];
+        // slumpa ordföljden
+        shuffleArray(words);
+        //Array ballons
+        let ballons = []
+            // text som skrivs
+        let text = "";
+        //variable för poäng
+
+        let score = 0;
 
         // ange en variabel för canvas elementet
         const canvas = document.querySelector("canvas");
@@ -51,12 +67,15 @@
 
 
 
+
+
         /* händelselyssnare
         __________________________________________*/
 
         startButton.addEventListener("click", function() {
             this.setAttribute("disabled", "disabeled");
             nextFrame();
+            spawnBallon();
         })
 
         stopButton.addEventListener("click", function() {
@@ -67,6 +86,8 @@
         canvas.addEventListener("click", function(event) {
             let mouse = getMousePosition(event);
         });
+        document.addEventListener("keydown", getKeyDown, false);
+
 
 
 
@@ -90,8 +111,16 @@
             // tangentbord och mus
 
             // logik
+            if (frameId % 240 === 0) {
+                spawnBallon();
+            }
 
             // rendera
+
+            renderText();
+            renderBallons();
+            showScore();
+
 
         }
 
@@ -120,6 +149,147 @@
         function getRandomBetween(min, max) {
             let number = Math.random() * (max - min + 1) + min;
             return Math.floor(number);
+        }
+
+        /**
+         * Durstenfeld shuffle algoritm
+         * https://en.wikipedia.org/wiki/Fisher-Yates_shuffle#The_modern_algorithm
+         */
+        function shuffleArray(array) {
+            for (var i = array.length - 1; i > 0; i--) {
+                var j = Math.floor(Math.random() * (i + 1));
+                var temp = array[i];
+                array[i] = array[j];
+                array[j] = temp;
+            }
+        }
+
+
+
+        function Ballon(content) {
+            this.content = content;
+            this.radius = this.content.length * 10;
+            this.x = getRandomBetween(100, canvas.width - 100);
+            this.y = canvas.height + this.radius;
+            this.vx = 0;
+            this.vy = -1;
+            this.draw = function() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = "yellow";
+                ctx.fill();
+                //
+                ctx.font = "25px Times";
+                ctx.fillStyle = "red";
+                ctx.textAlign = "center";
+                ctx.fillText(this.content, this.x, this.y, this.radius * 2);
+            }
+            this.draw = function() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false);
+                ctx.fillStyle = "yellow";
+                ctx.fill();
+                ctx.font = "25px Times";
+                ctx.fillStyle = "red";
+                ctx.textAlign = "center";
+                ctx.fillText(this.content, this.x, this.y, this.radius * 2);
+            }
+            this.move = function() {
+                this.x += this.vx;
+                this.y += this.vy;
+                this.draw();
+            }
+        }
+
+        function spawnBallon() {
+            if (words.length > 0) {
+                let word = words.pop();
+                let ballon = new Ballon(word);
+                ballons.push(ballon);
+            }
+        }
+
+        function renderBallons() {
+            for (var i = 0; i < ballons.length; i++) {
+                ballons[i].move();
+
+
+            }
+        }
+
+        function getKeyDown(event) {
+            console.log(event);
+            if (chars.indexOf(event.key) >= 0) {
+                text += event.key;
+            }
+            if (event.code === "Enter") {
+                // anropa en funktion som kontrollera om texten finns i en ordballong
+                checkBallonMatch(text);
+
+                text = "";
+                checkScore();
+
+
+
+
+                //score += 1;
+            }
+            if (event.code === "Backspace") {
+                backspace1();
+                // radera sista tecknet i variabeln text
+
+            }
+
+        }
+
+        function renderText() {
+            ctx.font = "50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "white";
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2, canvas.width);
+        }
+
+        function showScore() {
+            ctx.font = "100px Arial";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "white"
+            ctx.fillText(score, canvas.width / 2, canvas.height / 3);
+
+        }
+
+        function checkBallonMatch(text) {
+            for (var i = 0; i < ballons.length; i++) {
+                if (ballons[i].content === text) {
+                    ballons[i].content = "";
+
+
+                }
+            }
+        }
+
+        function checkScore() {
+            for (var i = 0; i < ballons.length; i++) {
+                if (ballons[i].content === text) {
+                    ballons[i].content = score += 1;
+
+
+
+                }
+
+            }
+        }
+
+        function backspace1() {
+            for (var i = 0; i < ballons.length; i++) {
+                if (ballons[i].content === text) {
+                    ballons[i].content = ballons[i].content.slice(0, ballon[i].length - 1);
+
+
+
+
+                }
+
+            }
         }
     </script>
 
