@@ -32,7 +32,7 @@
 
     <script>
         /* variabler
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        _______________________________________*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                _______________________________________*/
 
 
         // godkända tecken
@@ -42,6 +42,9 @@
         let words = ["grön", "glad", "vår", "sol", "snö", "sommar", "häst", "surfing", "ballong", "blå", "hav", "hund", "katt", "tiger", "säl", "ametist", "cyniker", "implicit", "vågor", "vind"];
         // slumpa ordföljden
         shuffleArray(words);
+
+        let andraOrd = ["Jippi", "Bravo", "Super", "WOW!"]
+        shuffleArray(andraOrd);
         //Array ballons
         let ballons = []
             // text som skrivs
@@ -230,15 +233,12 @@
                 checkScore();
 
 
-
-
-                //score += 1;
             }
+            //tar bort sista bokstaven ur text med hjälp av substring
             if (event.code === "Backspace") {
-                backspace1();
-                // radera sista tecknet i variabeln text
-
+                text = text.substring(0, text.length - 1);
             }
+
 
         }
 
@@ -265,29 +265,20 @@
 
                 }
             }
+
         }
+
 
         function checkScore() {
             for (var i = 0; i < ballons.length; i++) {
                 if (ballons[i].content === text) {
-                    ballons[i].content = score += 1;
-
-
-
-                }
-
-            }
-        }
-
-        function backspace1() {
-            for (var i = 0; i < ballons.length; i++) {
-                if (ballons[i].content === text) {
-                    ballons[i].content = ballons[i].content.slice(0, ballon[i].length - 1);
+                    score += 1;
 
 
 
 
                 }
+
 
             }
         }
