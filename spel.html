@@ -32,7 +32,7 @@
 
     <script>
         /* variabler
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                _______________________________________*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        _______________________________________*/
 
 
         // godkända tecken
@@ -251,6 +251,12 @@
         }
 
         function checkBallonMatch(text) {
+
+
+            if (text.length === 0) {
+                return;
+            }
+
             for (var i = 0; i < ballons.length; i++) {
                 if (ballons[i].content === text) {
                     ballons[i].content = "";
@@ -271,6 +277,10 @@
                     // ändar ballongens storlek
                     ballons[i].radius = 50;
 
+                    //lägg till poäng
+
+                    score += 1;
+
 
 
 
@@ -288,6 +298,7 @@
             for (var i = 0; i < ballons.length; i++) {
                 if (ballons[i].content === text) {
                     score += 1;
+
 
 
 
