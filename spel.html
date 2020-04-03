@@ -32,7 +32,7 @@
 
     <script>
         /* variabler
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        _______________________________________*/
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                _______________________________________*/
 
 
         // godkända tecken
@@ -69,7 +69,7 @@
         // aktuell frame i animationen
         let frameId = 0;
 
-
+        printMessage("Super spelet");
 
 
 
@@ -242,11 +242,18 @@
             ctx.fillText(text, canvas.width / 2, canvas.height / 2, canvas.width);
         }
 
+        function printMessage(msg) {
+            ctx.font = "50px Arial";
+            ctx.textAlign = "center";
+            ctx.fillStyle = "white";
+            ctx.fillText(msg, canvas.width / 2, canvas.height / 2, canvas.width);
+        }
+
         function showScore() {
             ctx.font = "100px Arial";
             ctx.textAlign = "center";
             ctx.fillStyle = "white"
-            ctx.fillText(score, canvas.width / 2, canvas.height / 3);
+            ctx.fillText(score, canvas.width / 2, canvas.height / 4);
 
         }
 
@@ -280,6 +287,14 @@
                     //lägg till poäng
 
                     score += 1;
+
+                    if (score === 10) {
+                        cancelAnimationFrame(frameId);
+                        ctx.clearRect(0, 0, canvas.width, canvas.height);
+                        showScore();
+                        printMessage("spelet är slut");
+
+                    }
 
 
 
